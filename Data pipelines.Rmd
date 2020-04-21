@@ -1,0 +1,19 @@
+---
+title: "Data pipelines"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+write_csv(iris, "iris.csv")
+```
+
+## read
+
+```{r}
+read_csv("iris.csv")
+```
+
