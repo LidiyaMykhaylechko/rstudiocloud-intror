@@ -15,5 +15,71 @@ write_csv(iris, "iris.csv")
 
 ```{r}
 read_csv("iris.csv")
+iris_raw = read_csv("iris.csv")
+```
+## you can also read and write in excel
+```{r}
+library(readxl)
+library(writexl)
+write_xlsx(iris, "iris.xlsx")
+read_excel("iris.xlsx")
+```
+
+##Exploratory analysis
+Data explorer - nice package
+# :: means give me a function from the package
+# eval=False, tidy=TRUE - the code is being tidied, e.g. if don't put space between y and =, it does it in the output
+```{r eval=FALSE, tidy=TRUE}
+DataExplorer::create_report(iris_raw, y="Species")
+```
+
+##Querying rows
+#pipelining - CTRL SHIFT M - %>% 
+```{r}
+iris_raw %>% 
+  head(10) # values from top of data (top 10 rows). Sample of data
+ttail(10) # gets the values from the bottom of data set (bottom 10 rows)
+
+iris_raw %>% 
+  sample_n(10) # show random ten rows + all columns
+
+iris_raw %>% 
+  sample_frac(0.10) # a fraction of data
+
+# the lines before are equal to these:
+
+head(iris_raw, 10)
+tail(iris_raw, 10)
+sample_n(iris_raw, 10)
+sample_frac(iris_raw, 10)
+```
+
+
+##Where
+
+```{r}
+iris_raw %>% 
+  filter(Species=="setosa", Sepal.Length >5.5)
+
+filter(iris_raw, Species == "setosa", Sepal.Length >5.5)
+```
+
+# what does | mean - pipe
+
+```{r}
+iris_raw %>% 
+  filter((Species=="setosa" | Sepal.Length > 5.5), Sepal.Width < 3)
+```
+
+
+```{r}
+iris_raw %>%
+  filter_if(is.numeric, ~ . < 5) #if too many columns. can only filter if value is numeric. Since we don't know which column title it would be then we use ~ and then . as place holder for title and then condition. Here, ~ is equivalent to "all variable" (all_vars)
+
+iris_raw %>% 
+  filter_if(is.numeric, any_vars( . <5)) # if any of the values in a row are TRUE to this condition, include it
+
+iris_raw %>% 
+  filter_if(is.numeric, all_vars( . <5)) # only if ALL values of a row are TRUE
 ```
 
