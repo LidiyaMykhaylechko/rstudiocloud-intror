@@ -58,12 +58,14 @@ Can write text in the following ways:
 Can turn this text, which are all as single values, to be part of a vector/column, with c function (combine)
 
 ```{r}
-c("this is text",'this is also text',"this is someone's text",'this is someone\'s text')
+c("this is text",'this is also text', "this is someone's text", 'this is someone\'s text')
 ```
+
 
 ```{r}
 bloodtypes <- factor(c("A+", "B-", "O-", "A+", "O-"))
 sort(bloodtypes)
+cat(bloodtypes)
 ```
 
 
@@ -97,3 +99,58 @@ Exercise 4:
 ```{r}
 '"Do you think this is a game?", he said. "No, I think Jenga\'s a game", Archer responded.'
 ```
+
+
+## Vectors etc
+
+```{r}
+ex_vector = c(1,2,3,4,5)
+pi*ex_vector^2
+```
+# For generating sequences
+
+```{r}
+vector = 1:5 # equals vector = c(1,2,3,4,5)
+
+```
+
+## matrix is a 2D array of values that are all the same data type
+
+```{r}
+matrix (LETTERS, nrow=13)
+#can transpose
+t(matrix(LETTERS, nrow=13))
+matrix(letters, c(2,NA))
+m = matrix(letters, nrow = 2)
+m[2,]
+m[-2,] #exclude values in row 2
+
+#can add conditions
+include_filter = m[ ,1] <= "F" # include values in column 1 that are equal or less than "F"
+m[include_filter,]
+```
+
+# array is an n dimnensional set of values
+
+```{r}
+array(LETTERS[1:24], c(2,2,6))
+```
+
+# export matrices to file in table format
+
+```{r}
+write.csv(array(LETTERS[1:24], c(2,2,6)))
+```
+ 
+## Structure data using a data frame - basicaly a name for table in spreadsheet. It can have multiple vectors as columns
+ 
+```{r}
+data.frame(
+  id = 1:5,
+  name = letters[1:5],
+  outcome = rnorm(5))
+```
+
+
+
+ 
