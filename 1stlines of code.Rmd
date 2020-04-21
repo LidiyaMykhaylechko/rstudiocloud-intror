@@ -31,3 +31,25 @@ area
 ```{r}
 iris
 ```
+
+
+```bash
+git config --global user.email "lm798@cam.ac.uk"
+  git config --global user.name "LidiyaMykhaylechko"
+```
+
+We can assign object with three different methods:
+
+```{r}
+diameter = 12
+diameter <- 12
+12 -> diameter
+```
+
+Can write text in the following ways:
+```{r}
+"this is text"
+'this is text'
+"this is someone's text"
+'this is someone\'s text'
+```
