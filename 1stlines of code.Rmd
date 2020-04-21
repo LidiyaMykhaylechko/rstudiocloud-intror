@@ -47,9 +47,53 @@ diameter <- 12
 ```
 
 Can write text in the following ways:
+
 ```{r}
 "this is text"
-'this is text'
+'this is also text'
 "this is someone's text"
 'this is someone\'s text'
+```
+
+Can turn this text, which are all as single values, to be part of a vector/column, with c function (combine)
+
+```{r}
+c("this is text",'this is also text',"this is someone's text",'this is someone\'s text')
+```
+
+```{r}
+bloodtypes <- factor(c("A+", "B-", "O-", "A+", "O-"))
+sort(bloodtypes)
+```
+
+
+
+## Exercises of "Data Types - 8.7"
+
+Exercise 1:
+
+```{r}
+as.integer(TRUE)
+# as.numeric(TRUE) is also possible but more vague
+```
+ 
+Exercise 2:
+```{r}
+Sys.time()
+class(Sys.time())
+```
+# This data is date
+The 'class()' function returns metadata and string encoding is important because not getting it right can screw up data...
+Exercise 3:
+
+```{r}
+Sys.timezone()
+class(Sys.timezone)
+```
+# This data is text
+
+Exercise 4:
+
+```{r}
+'"Do you think this is a game?", he said. "No, I think Jenga\'s a game", Archer responded.'
 ```
