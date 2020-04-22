@@ -88,7 +88,9 @@ iris_raw %>%
 # Exercise 1: Write a filter that gets all action movies from the movies dataset via the ggplot2movies package
 
 ```{r}
+library(tidyverse)
 library(ggplot2movies)  # get library
+ggplot2movies::movies #look at waht data is in the package
 movies # check the data frame
 write_csv(movies, "movies.csv") # write the dataframe onto csv file
 movies_data = read_csv ("movies.csv") # assign the read file to movies_data 
@@ -106,16 +108,118 @@ movies_data %>%
   sample_n(10)
 60*6
 movies_data %>% 
-  filter(length <= 360)
+  filter(length <= 360) %>%  
+  summarise(max(length))
+
 movies_data %>% 
-  filter(length > - 360) # can you exclude values like this?? but then what if you have negative values? why is there more rows in this code than the previous?
+  filter(length > - 360) # can you exclude values like this?? but then what if you have negative values? why is there more rows in this code than the previous? CANT DO THIS. The function only returns a TRUE or FALSE. SO need to make sure that the things we dont want return as false.
+
 ```
+## Need to have the %>%  sign at the end of each line to carry on pipeline. Can save it in the end by assigning it to a new name with -> arrow
 ## Exercise 3:[ADVANCED] Write a filter that checks to see if any of the films don’t have any genres flagged at all
 
 
 ```{r}
 movies_data %>% 
   filter_at(vars(Action, Animation, Comedy, Drama, Documentary, Romance, Short), all_vars(. == 0))
+
+movies_data %>% 
+  filter_at(vars(Action:Short), all_vars (. ==0))
 ```
 
 library(beepr)
+
+## Can use select function to select certain columns, or exclude
+
+```{r}
+iris %>% 
+  select(Sepal.Length, Petal.Width)
+
+iris %>% 
+  select(-Sepal.Length)
+
+iris %>% 
+  select(-(Sepal.Length:Petal.Width))
+
+iris %>% 
+  select(starts_with("Sepal"))
+
+iris %>% 
+  select_if(is.numeric) %>% 
+  prcomp()
+```
+##21.5 Exercises
+# 1: Output the movies dataset with the column budget changed to budget_if_known
+
+```{r}
+movies %>% 
+  rename(budget_if_known = budget) ->
+  movies_cleaned
+
+movies %>% 
+  select(budget_if_known = budget, everything())
+```
+## Longer pipelines
+Show sepal details for setosa flowers
+
+```{r}
+iris %>% 
+  filter(Species == "setosa") %>% 
+  select(starts_with("Sepal"))
+```
+## Changing or adding columns
+
+```{r}
+iris %>% 
+  mutate(Sepal.Length = Sepal.Length - 0.1, 
+         Sepal.Area = Sepal.Length * Sepal.Width) # creates a new column at the end and uses the corrected values.
+
+iris %>% 
+  mutate(Species_trun = str_trunc(as.character(Species),3), Diff.Sepal.Length = (Sepal.Length - mean(Sepal.Length))/mean(Sepal.Length))
+```
+
+## Exercise
+# Add a column to movies that says how much the length differes from the median.
+
+```{r}
+movies %>% 
+  mutate(diff_length = length - median(length)) ->
+  movies_diff
+movies_diff
+```
+## Aggregating our data
+- groups = group by
+- aggregation (how you are aggregating it) - another term is summarise
+
+```{r}
+iris %>% 
+  group_by(Species) %>% 
+  summarise(count = n(), avg.Sepal.Length = mean(Sepal.Length))
+
+iris %>% 
+  group_by(Species) %>% 
+  summarise_all(mean)
+
+iris %>% 
+  mutate(Diff.Sepal.Length = (Sepal.Length - mean(Sepal.Length))/mean(Sepal.Length)) %>% # difference to total mean
+  group_by(Species) %>% 
+  mutate(Species.Diff.Sepal.Length = (Sepal.Length - mean(Sepal.Length))/mean(Sepal.Length)) # the difference is now calculated on a species basis ( diff of a value compared to the species mean)
+```
+## Section 26.7
+# 1- Find the min and max values for length in movies
+# 2- In a pipeline, find out what proportion of films are Action movies, Action Comedies, Comedies, and neither Action or Comedy
+
+```{r}
+# movie length range
+movies %>% 
+  summarise(min(length), max(length)/60)
+#proportions
+movies %>% 
+  group_by(Action,Comedy) %>% 
+  summarise(n=n()) %>% 
+  mutate(per=n/sum(n)) %>%  # dont add up to 100 ...?
+  ungroup() %>% 
+  mutate(per=n/sum(n)) %>% 
+  summarise(sum(per)) # check it adds up
+```
+
