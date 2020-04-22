@@ -83,3 +83,39 @@ iris_raw %>%
   filter_if(is.numeric, all_vars( . <5)) # only if ALL values of a row are TRUE
 ```
 
+## Filtering exercises 
+
+# Exercise 1: Write a filter that gets all action movies from the movies dataset via the ggplot2movies package
+
+```{r}
+library(ggplot2movies)  # get library
+movies # check the data frame
+write_csv(movies, "movies.csv") # write the dataframe onto csv file
+movies_data = read_csv ("movies.csv") # assign the read file to movies_data 
+spec(movies_data) #to get more info on columns
+head (movies_data) # get the top ten rows to get to know the data
+movies_data %>% 
+  sample_n(10) # see a random sample of data (10rows)
+movies_data %>% filter(Action == "1") # filter the films which are classified as action by having 1 in the action column
+col_double() #??
+```
+# Exercise 2: Write a filter that removes films lasting more than 6 hours from the movies dataset
+
+```{r}
+movies_data %>% 
+  sample_n(10)
+60*6
+movies_data %>% 
+  filter(length <= 360)
+movies_data %>% 
+  filter(length > - 360) # can you exclude values like this?? but then what if you have negative values? why is there more rows in this code than the previous?
+```
+## Exercise 3:[ADVANCED] Write a filter that checks to see if any of the films don’t have any genres flagged at all
+
+
+```{r}
+movies_data %>% 
+  filter_at(vars(Action, Animation, Comedy, Drama, Documentary, Romance, Short), all_vars(. == 0))
+```
+
+library(beepr)
