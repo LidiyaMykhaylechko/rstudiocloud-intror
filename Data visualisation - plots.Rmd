@@ -1,0 +1,117 @@
+---
+title: "Data Visualisation"
+output: html_notebook
+---
+# ggplot() - plot object 
+# + allows to add instructions
+# aes = aesthetics, assign x and y and can add more info
+# geom allows to pick which type of plot we want
+```{r}
+library(tidyverse)
+
+iris %>% 
+  ggplot() + 
+  aes(x= Sepal.Width, y= Sepal.Length, colour= Species) +
+  geom_point() ->
+  basic_plot
+
+basic_plot
+
+library(plotly)
+
+ggplotly(basic_plot)  # makes the plot interactive. Can add or omit stuff
+
+basic_plot + aes(x=Petal.Length, y= Petal.Width)
+
+basic_plot + aes(Petal.Length, y=Petal.Width, label=Species) + geom_text()
+
+install.packages(ggrepel)
+library(ggrepel)
+
+basic_plot + aes(Petal.Length, y=Petal.Width, label=Petal.Width) # ....
+
+```
+```{r}
+iris %>% 
+  ggplot() +
+  aes(x=Sepal.Width) +
+  geom_histogram(bins = 10)
+```
+```{r}
+iris %>% 
+  ggplot()+
+  aes(x=Sepal.Width)+
+  geom_density()
+```
+
+```{r}
+iris %>% 
+  ggplot()+
+  aes(x=Species, y=Sepal.Width)+
+        geom_col()
+```
+
+```{r}
+movies %>% 
+  group_by(year) %>% 
+  summarise(n=n()) %>% 
+  ggplot()+
+  aes(x=year, y=n)+
+  geom_line()
+```
+## Stephen Few - data visualisation book
+## Alberto Cairo - also
+
+```{r}
+library(ggthemes)
+basic_plot +
+  labs(title = "Sepal..", 
+       subtitle= "Scatter plot demonstating..", x= "Sepal WIdth (cm)", y= "Sepal Length (cm)") + theme_minimal()
+
+basic_plot +
+  labs(title = "Sepal..", 
+       subtitle= "Scatter plot demonstating..", x= "Sepal WIdth (cm)", y= "Sepal Length (cm)") +
+  theme_fivethirtyeight() + 
+  theme(legend.position = "top", legend.justification = "left") -> 
+  basic_plot_themed
+
+ggsave("basic.pdf", basic_plot_themed, width = 15, height = 15, units="in", dpi = 300) #save in PDF
+```
+
+```{r}
+basic_plot +
+  facet_wrap(~Species) # separate the species!
+```
+
+## Sections 32-34, Exercises 35 & 36
+
+```{r}
+library(datasauRus)
+# Produce a facetted scatter plot for simpsons_paradox split by dataset.
+simpsons_paradox %>% 
+  ggplot()+
+  aes(x,y)+
+  geom_point()+
+  facet_wrap(~dataset)
+#using knowledge acquired in this section, make one of your charts look good.
+
+simpsons_paradox %>% 
+  ggplot()+
+  aes(x,y)+
+  geom_point(colour="#009688", alpha=0.5)+
+  facet_wrap(~dataset)
+
+#alpha to change transparancy of points if they overlap a lot
+
+simpsons_paradox %>% 
+  ggplot()+
+  aes(x,y, colour=dataset)+
+  geom_point(alpha=0.5)+
+  scale_color_colorblind()+
+  facet_wrap(~dataset)  # can use "" or ~ before column head
+
+#colour blind friendly colours
+```
+
+
+

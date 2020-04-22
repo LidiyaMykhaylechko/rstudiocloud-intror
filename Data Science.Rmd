@@ -1,0 +1,32 @@
+---
+title: "Data Science"
+output: html_notebook
+---
+```{r}
+library(AppliedPredictiveModeling)
+data(AlzheimerDisease)
+alzheimers <- predictors %>% cbind(diagnosis) # putting together different datasets which were split
+
+view(alzheimers)
+
+#######
+
+library(PASWR)
+library(skimr)
+library(xray)
+library(naniar)
+library(DataExplorer)
+
+view(titanic3)
+skim(titanic3)
+xray::distributions(titanic3)
+naniar::miss_prop_summary(titanic3)
+```
+
+#trip the data to exclude some columns that would not provide us useful info or were collected AFTER the event we are trying to predict
+
+##Need to split data (44 in R course book) to have around 70% normally for training your model and 30% for testing (which the model has not seen)
+```{r}
+
+```
+

@@ -221,5 +221,28 @@ movies %>%
   ungroup() %>% 
   mutate(per=n/sum(n)) %>% 
   summarise(sum(per)) # check it adds up
+
+
+movies %>%  
+  group_by(Action,Comedy) %>% 
+  summarise_all(mean)
+
+movies %>% 
+  group_by(Action,Comedy) %>% 
+  summarise(number=n()) %>% 
+  mutate(percentage=number/sum(number))
+
+movies %>% 
+  group_by(Comedy) %>% 
+  summarise(number=n())
 ```
+```{r}
+movies %>% 
+  group_by(Action,Comedy) %>% 
+  summarise(n=n()) %>% 
+  mutate(per=n/sum(n)) %>%  # dont add up to 100 ...?
+  ungroup() %>% 
+  mutate(per=n/sum(n))
+```
+
 
